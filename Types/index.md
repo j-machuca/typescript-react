@@ -213,5 +213,76 @@ Interaces can extend other interfaces by using the `extends` keyword.
     ]
   }
   ```
-### Type aliases
+### Type alias
 
+- Type aliases allow us to create a new `type`.
+- Type aliases also allow us to define the shape of the object.
+
+```typescript
+
+// function signature using a type alias
+type GetTotal = (discount:number) => number;
+
+interface OrderDetail {
+  product:Product;
+  quantity:number;
+  getTotal:GetTotal;
+}
+
+// Defining the Product type alias
+type Product = {
+  name:string;
+  unitPrice:number;
+}
+
+// Implementing the Product type
+
+type OrderDetail ={
+  product:Product;
+  quantity:number;
+  getTotal:(discount:number) => number;
+}
+```
+
+### Classes
+
+- Classes have more features thatn `type` aliases and `interfaces`. One of these features is the ability to define the implementation of the methods in that class. 
+
+  ```typescript
+  class Product {
+    name:string;
+    unitPrice:number;
+  }
+
+  // type implementation - table type is implied from the Product class
+  const table = new Product();
+  table.name = "Table";
+  table.unitPrice = 500;
+  ```
+  **Refactoring OrderDetail**
+
+  ```typescript
+  // class definition
+  class OrderDetail {
+    product:Product;
+    quantity:number;
+    getTotal(discount:number):number{
+      const priceWithoutDiscount = this.product.unitPrice * this.quantity;
+      const discountAmount = priceWithoutdiscount 8 discount;
+      return priceWithoutDiscount - discountAmount;
+    }
+  }
+  // Class implementation
+
+  const table = new Product();
+  table.name = "Table";
+  table.unitPrice = 500;
+
+  const orderDetail = new OrderDetail();
+  orderDetail.product = table;
+  orderDetail.quantity = 2;
+
+  const total = orderDetail.getTotal(0.1);
+  console.log(total);
+  
+  ```
