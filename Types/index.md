@@ -6,13 +6,12 @@
 2. [Type Inference](#type-inference)
 3. [Primitive Types](#primitive-types)
 4. [Typescript Specific types](#typescript-specific-types)
-5. [Arrays](#arrays) 
-6. [Objects](#objects) 
+5. [Arrays](#arrays)
+6. [Objects](#objects)
 7. [Object Types](#object-types)
-    1. [Interfaces](#interfaces)
-    2. [Type Alias](#type-alias)
-    3. [Classes](#classes)
-
+   1. [Interfaces](#interfaces)
+   2. [Type Alias](#type-alias)
+   3. [Classes](#classes)
 
 ---
 
@@ -73,27 +72,27 @@
 
      let status = OrderStatus.Shipped;
      ```
+
 ### Arrays
 
 - Represent the same structure available in Javascript.
 
   ```typescript
   // Define an array and type annotate
-  const numbers:number[] = []
+  const numbers: number[] = [];
 
   // We can access all the array methods like usual.
 
-  numbers.push(1)
+  numbers.push(1);
 
-  // passing a function 
+  // passing a function
   // the num parameter gets inferred correctly by typescript. Type annotating it is still posible.
-  numbers.forEach(function(num){
-    console.log(num)
-  })
+  numbers.forEach(function (num) {
+    console.log(num);
+  });
 
   // passing an arrow function
-  numbers.forEach((num)=> console.log(num)
-  )
+  numbers.forEach((num) => console.log(num));
 
   // We can change the value even if we used const since reference to the array is still the same.
   ```
@@ -101,7 +100,7 @@
 ### Objects
 
 - Represents a non-primitive type.
-- We can define the object structure before using it by defining *interfaces*, *type aliases* and *classes*.
+- We can define the object structure before using it by defining _interfaces_, _type aliases_ and _classes_.
 
   ```typescript
   // Creating an Object just like JS. Typescript can infer types.
@@ -116,142 +115,137 @@
   customer.turnover = 2000000;
   ```
 
-
 ### **Interfaces**
 
-  - Defines a type with a collection of property and method definition without the implementation. 
+- Defines a type with a collection of property and method definition without the implementation.
 
-  - Interfaces can reference other interfaces inside it. 
+- Interfaces can reference other interfaces inside it.
 
 **Properties**
 
-  ```typescript
-  // Creating a Product interface
-  interface Product {
-    // properties can be readonly
-    readonly name:string;
-    unitPrice:number;
-  }
+```typescript
+// Creating a Product interface
+interface Product {
+  // properties can be readonly
+  readonly name: string;
+  unitPrice: number;
+}
 
-  // Creating a OrderDetail interface 
-  interface OrderDetail {
-    product:Product;
-    quantity:number;
-    // Optional properties can be specified by adding a ?
-    dateAdded?:Date,
-  }
+// Creating a OrderDetail interface
+interface OrderDetail {
+  product: Product;
+  quantity: number;
+  // Optional properties can be specified by adding a ?
+  dateAdded?: Date;
+}
 
-  // Creating an Product object
+// Creating an Product object
 
-  const table:Product = {
-    name:"Table",
-    unitPrice:500,
-  }
+const table: Product = {
+  name: "Table",
+  unitPrice: 500,
+};
 
-  // Creating an OrderDetail Object
-  const tableOrder:OrderDetail = {
-    product:table,
-    quantity:1
+// Creating an OrderDetail Object
+const tableOrder: OrderDetail = {
+  product: table,
+  quantity: 1,
+};
+```
 
-  }
+**Methods**
 
-  
-  ```
+```typescript
+// Interface definition
 
-  **Methods**
+interface OrderDetail {
+  product: Product;
+  quantity: number;
+  // can specify optional function parameters by adding a ? to function signatures
+  getTotal(discount?: number): number;
+}
 
-  ```typescript
-  // Interface definition
+// Interface Implementation
 
-  interface OrderDetail {
-    product: Product;
-    quantity:number;
-    // can specify optional function parameters by adding a ? to function signatures
-    getTotal(discount?:number):number;
-  }
+const tableOrder: OrderDetail = {
+  product: table,
+  quantity: 1,
 
-  // Interface Implementation
-
-  const tableOrder:OrderDetail = {
-    product:table,
-    quantity:1,
-    
-    getTotal(discount:number):number{
-      const priceWithoutDiscount = this.product.unitPrice * this.quantity;
-      const discountAmount = priceWithoutDiscount * (discount|| 0);
-      return priceWithoutDiscount - discountAmount;
-    }
-  }
-
-  ```
+  getTotal(discount: number): number {
+    const priceWithoutDiscount = this.product.unitPrice * this.quantity;
+    const discountAmount = priceWithoutDiscount * (discount || 0);
+    return priceWithoutDiscount - discountAmount;
+  },
+};
+```
 
 **Extending Interfaces**
 
 Interaces can extend other interfaces by using the `extends` keyword.
 
-  ```typescript
-  interface Product{
-    name:string;
-    unitPrice:number;
-  }
+```typescript
+interface Product {
+  name: string;
+  unitPrice: number;
+}
 
-  interface DiscountCode {
-    code:string;
-    percentage:number;
-  }
+interface DiscountCode {
+  code: string;
+  percentage: number;
+}
 
-  interface ProductWithDiscountcodes extends Product {
-    discountCodes:DiscountCode[];
-  }
+interface ProductWithDiscountcodes extends Product {
+  discountCodes: DiscountCode[];
+}
 
-  const table: ProductWithDiscountcodes = {
-    name:"Table",
-    unitPrice:500,
-    discountCodes:[
-      {code:'SUMMER10',percentage:0.1},
-      {code:'BFRI',percentage:0.2}
-    ]
-  }
-  ```
+const table: ProductWithDiscountcodes = {
+  name: "Table",
+  unitPrice: 500,
+  discountCodes: [
+    { code: "SUMMER10", percentage: 0.1 },
+    { code: "BFRI", percentage: 0.2 },
+  ],
+};
+```
+
 ### Type alias
 
 - Type aliases allow us to create a new `type`.
 - Type aliases also allow us to define the shape of the object.
 
 ```typescript
-
 // function signature using a type alias
-type GetTotal = (discount:number) => number;
+type GetTotal = (discount: number) => number;
 
 interface OrderDetail {
-  product:Product;
-  quantity:number;
-  getTotal:GetTotal;
+  product: Product;
+  quantity: number;
+  getTotal: GetTotal;
 }
 
 // Defining the Product type alias
 type Product = {
-  name:string;
-  unitPrice:number;
-}
+  name: string;
+  unitPrice: number;
+};
 
 // Implementing the Product type
 
-type OrderDetail ={
-  product:Product;
-  quantity:number;
-  getTotal:(discount:number) => number;
-}
+type OrderDetail = {
+  product: Product;
+  quantity: number;
+  getTotal: (discount: number) => number;
+};
 ```
 
 ### Classes
 
-- Classes have more features thatn `type` aliases and `interfaces`. One of these features is the ability to define the implementation of the methods in that class. 
+- Classes have more features thatn `type` aliases and `interfaces`. One of these features is the ability to define the implementation of the methods in that class.
 
   ```typescript
   class Product {
-    name:string;
-    unitPrice:number;
+    name: string;
+    unitPrice: number;
   }
 
   // type implementation - table type is implied from the Product class
@@ -259,6 +253,7 @@ type OrderDetail ={
   table.name = "Table";
   table.unitPrice = 500;
   ```
+
   **Refactoring OrderDetail**
 
   ```typescript
@@ -284,5 +279,27 @@ type OrderDetail ={
 
   const total = orderDetail.getTotal(0.1);
   console.log(total);
-  
+
+  ```
+
+  **Implementing Interfaces**
+
+  ```typescript
+  // Defining the Interface
+  interface IOrderDetail {
+    product: Product;
+    quantity: number;
+    getTotal(discount: number): number;
+  }
+
+  // Implementing the Interface
+  class OrderDetail implements IOrderDetail {
+    product: Product;
+    quantity: number;
+    getTotal(discount: number): number {
+      const priceWithoutDiscount = this.product.unitPrice * this.quantity;
+      const discountAmount = priceWithoutDiscount * discount;
+      return priceWithoutDiscount - discountAmount;
+    }
+  }
   ```
