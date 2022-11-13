@@ -117,40 +117,101 @@
   ```
 
 
-  #### **Interfaces**
+### **Interfaces**
 
   - Defines a type with a collection of property and method definition without the implementation. 
 
   - Interfaces can reference other interfaces inside it. 
 
-  **Properties**
+**Properties**
 
-    ```typescript
-    // Creating a Product interface
-    interface Product {
-      // properties of the object
-      name:string;
-      unitPrice:number;
+  ```typescript
+  // Creating a Product interface
+  interface Product {
+    // properties can be readonly
+    readonly name:string;
+    unitPrice:number;
+  }
+
+  // Creating a OrderDetail interface 
+  interface OrderDetail {
+    product:Product;
+    quantity:number;
+    // Optional properties can be specified by adding a ?
+    dateAdded?:Date,
+  }
+
+  // Creating an Product object
+
+  const table:Product = {
+    name:"Table",
+    unitPrice:500,
+  }
+
+  // Creating an OrderDetail Object
+  const tableOrder:OrderDetail = {
+    product:table,
+    quantity:1
+
+  }
+
+  
+  ```
+
+  **Methods**
+
+  ```typescript
+  // Interface definition
+
+  interface OrderDetail {
+    product: Product;
+    quantity:number;
+    // can specify optional function parameters by adding a ? to function signatures
+    getTotal(discount?:number):number;
+  }
+
+  // Interface Implementation
+
+  const tableOrder:OrderDetail = {
+    product:table,
+    quantity:1,
+    
+    getTotal(discount:number):number{
+      const priceWithoutDiscount = this.product.unitPrice * this.quantity;
+      const discountAmount = priceWithoutDiscount * (discount|| 0);
+      return priceWithoutDiscount - discountAmount;
     }
+  }
 
-    // Creating a OrderDetail interface 
-    interface OrderDetail {
-      product:Product;
-      quantity:number;
-    }
+  ```
 
-    // Creating an Product object
+**Extending Interfaces**
 
-    const table:Product = {
-      name:"Table",
-      unitPrice:500,
-    }
+Interaces can extend other interfaces by using the `extends` keyword.
 
-    const tableOrder:OrderDetail = {
-      product:table,
-      quantity:1
+  ```typescript
+  interface Product{
+    name:string;
+    unitPrice:number;
+  }
 
-    }
-    ```
+  interface DiscountCode {
+    code:string;
+    percentage:number;
+  }
 
-    **Methods**
+  interface ProductWithDiscountcodes extends Product {
+    discountCodes:DiscountCode[];
+  }
+
+  const table: ProductWithDiscountcodes = {
+    name:"Table",
+    unitPrice:500,
+    discountCodes:[
+      {code:'SUMMER10',percentage:0.1},
+      {code:'BFRI',percentage:0.2}
+    ]
+  }
+  ```
+### Type aliases
+
