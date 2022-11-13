@@ -303,3 +303,57 @@ type OrderDetail = {
     }
   }
   ```
+
+  **Constructors**
+
+  Constructors are functions that perform the initialization of new instances of a class.
+
+  ```typescript
+  class OrderDetail implements IOrderDetail {
+    product: Product;
+    quantiy: number;
+
+    constructor(product: Product, quantity: number) {
+      this.product = product;
+      this.quantity = quantity;
+    }
+
+    getTotal(discount: number): number {
+      // implementation goes here
+    }
+  }
+
+  // creating a new instance of OrderDetail
+  const orderDetail = new OrderDetail(table, 2);
+  ```
+
+  We can also set default values by modifying our constructor function
+
+  ```typescript
+  constructor(product:Product,quantity:number){
+    this.product = product;
+    this.quantity = quantity;
+  }
+
+  // creating a new instance
+  new orderDetail = new OrderDetail(table);
+  ```
+
+  By adding the `public` keyword before the parameters in the constructor we can let the **Typescript compiler** implement the `product` and `quantity` properties.
+
+  ```typescript
+  class OrderDetail implements IOrderDetail {
+    constructor(public product: Product, public quantity: number = 1) {
+      this.product = product;
+      this.quantity = quantity;
+    }
+
+    getTotal(discount: number): number {
+      // Implementation goes here
+    }
+  }
+  ```
+
+  **Extending Classes**
+
+  `Class`es can extend other `Class`es like we do with `interfaces`.
