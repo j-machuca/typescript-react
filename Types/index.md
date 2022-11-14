@@ -405,3 +405,29 @@ type OrderDetail = {
   }
 
   ```
+
+  **Abstract classes**
+
+  Abstract classes can only be inherited from but not instanciated. 
+
+  ```typescript
+  // Define the abstract class
+  abstract class Product{
+    name:string;
+    unitPrice:number;
+    abstract delete():void;
+  }
+  // Extend the abstract class
+  class Food extends Product {
+    deleted:boolean;
+    constructor(public bestBefore:Date){
+      super();
+    }
+    delete(){
+      this.deleted = false;
+    }
+  }
+
+  // create an instance of the Food class
+  const bread = new Food(new Date(2022,11,14));
+  ```
