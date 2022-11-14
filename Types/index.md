@@ -12,7 +12,9 @@
    1. [Interfaces](#interfaces)
    2. [Type Alias](#type-alias)
    3. [Classes](#classes)
-
+8. [Access Modifiers](#access-modifiers)
+9. [Property Setters and Getters](#property-setters-and-getters)
+10. [Static](#static)
 ---
 
 ## Type Basics
@@ -25,7 +27,7 @@
 
 - Typescript has the ability to infere the type of variables.
 
-### Primitive types
+## Primitive types
 
 1. string
 2. sumber
@@ -33,7 +35,7 @@
 4. undefined
 5. null
 
-### Typescript Specific Types
+## Typescript Specific Types
 
 1. any
    - If a variable is defined and no type is specified typescript assigns the type `any`
@@ -73,7 +75,7 @@
      let status = OrderStatus.Shipped;
      ```
 
-### Arrays
+## Arrays
 
 - Represent the same structure available in Javascript.
 
@@ -97,7 +99,7 @@
   // We can change the value even if we used const since reference to the array is still the same.
   ```
 
-### Objects
+## Objects
 
 - Represents a non-primitive type.
 - We can define the object structure before using it by defining _interfaces_, _type aliases_ and _classes_.
@@ -115,7 +117,7 @@
   customer.turnover = 2000000;
   ```
 
-### **Interfaces**
+## **Interfaces**
 
 - Defines a type with a collection of property and method definition without the implementation.
 
@@ -208,7 +210,7 @@ const table: ProductWithDiscountcodes = {
 };
 ```
 
-### Type alias
+## Type alias
 
 - Type aliases allow us to create a new `type`.
 - Type aliases also allow us to define the shape of the object.
@@ -238,7 +240,7 @@ type OrderDetail = {
 };
 ```
 
-### Classes
+## Classes
 
 - Classes have more features thatn `type` aliases and `interfaces`. One of these features is the ability to define the implementation of the methods in that class.
 
@@ -431,3 +433,88 @@ type OrderDetail = {
   // create an instance of the Food class
   const bread = new Food(new Date(2022,11,14));
   ```
+## Access Modifiers
+
+  The `public` keyword allows us to access and interact with properties and methods inside the class. 
+
+  On the other hand the `private` allows the member to only be available to interact withing the class and not on instances or child classes.
+
+  Last there is a `protected` keyword that allows us to interact with inside the class and on child classes but not on instances. 
+
+  ```typescript
+  class OrderDetail {
+    public product:Product;
+    public quantity:number;
+    private deleted:boolean;
+
+    public delete(): void {
+      this.deleted = true;
+    }
+  }
+
+  const orderDetail = new OrderDetail();
+  // cannot access the deleted property this will make the compiler flag this as an error.
+  orderDetail.deleted = true;
+  ```
+
+## Property setters and getters
+
+For more complex scenarios we can implement property *setters* and *getters*.
+
+Usually you store the property in a `private` property.
+
+- **Getters** : is a function that returns the value of a `private` property. 
+  
+  *The convention for getter functions are to name it `get_property`.*
+
+- **Setters** : is a function that receives a single paramenter that will set the `private` property.
+
+  *The convention for setter functions are to name it `set_property`.*
+
+- The `private` property is commonly named the same as the `getter` and `setter` with an `_` infront of the property.
+
+```typescript
+class Product {
+  name:string;
+
+  private _unitPrice:number;
+  get unitPrice():number {
+    return this._unitPrice || 0;
+  }
+
+  set unitPrice(value:number){
+    if (value< 0) {
+      value = 0;
+    }
+    this._unitPrice = value;
+  }
+}
+
+//  Implementation
+const table = new Product();
+table.name = "Table";
+console.log(table.unitPrice);
+table.unitPrice = -10;
+console.log(table.unitPrice);
+```
+
+## Static
+
+`static` properties and methods are held in the class itself and not in the class instance.
+
+```typescript
+class OrderDetail {
+  product: Product;
+  quantity:number;
+
+
+  static getTotal(unitPrice:number,quantity:number,discount:number):number {
+    const priceWithoutDiscount = unitPrice * quantity;
+    const discountAmount = priceWithoutDiscount * discount;
+    return priceWithoutDiscount - discountAmount;
+  }
+}
+
+const total = OrderDetail.getTotal(500,2,0.1);
+console.log(total);
+```
