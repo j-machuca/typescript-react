@@ -357,3 +357,51 @@ type OrderDetail = {
   **Extending Classes**
 
   `Class`es can extend other `Class`es like we do with `interfaces`.
+
+  ```typescript
+  // Create Base classes
+  class Product {
+    name:string;
+    unitPrice:number;
+  }
+
+  interface DiscountCode {
+    code:string;
+    percentage:number;
+  }
+  // Extending base classes
+  class ProductWithDiscountCodes extends Product {
+    discountCodes:DiscountCode[];
+  }
+
+  // Creating a class instance
+  const table = new ProductWithDiscountCodes();
+  table.name = "Table";
+  table.unitPrice = 500;
+  table.discountCodes = [
+    { 
+      code: "SUMMER10",
+      percentage: 0.1 
+    },
+    { 
+      code: "BFRI",
+      percentage: 0.2
+    }
+  ]
+
+  // if the the parent class has a constructor class then we need to use the super() method in the constructor
+
+  class Product {
+    constructor(public name:string,public unitPrice:number){}
+  }
+
+  // .....  //
+
+  class ProductWithDiscountcodes extends Product {
+    constructor(public name:string,public unitPrice:number){
+      super(name,unitPrice)
+    }
+    discountCodes:DiscountCode[]
+  }
+
+  ```
