@@ -1,4 +1,4 @@
-# Modules3
+# Modules
 
 ## Index
 
@@ -8,7 +8,8 @@
 2. [Exporting](#exporting)
 3. [Importing](#importing)
 4. [Default Exports](#default-exports)
-
+5. [Compilation](#configuring-compilation)
+6. [The tsconfig.json file](#tsconfigjson)
 
 
 ## Modules
@@ -124,3 +125,36 @@ import Product from '/product';
 9. `--moduleResolution` 
     - Tells Typescript how to resolve modules.
     - Common values are `classic` or `node`. Using the node value for module resolution tells the compiler to look for modules in `node_modules`.
+
+### **tsconfig.json**
+
+Instead of specifying the different flags everytime we need to compile we can specify them once in the `tsconfig.json` file.
+
+```json
+// Basic Configuration 
+{
+ "compilerOptions": {
+    "target": "esnext",
+    "outDir": "dist",
+    "module": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true
+    }      
+}
+```
+
+We can specify the files and folders to be checked or ignored by the compiler as well. 
+
+```json
+{
+    "compilerOptions":{
+        ...
+    },
+    "include":["src/**/*"]
+}
+```
+## **TSLint**
+
+
