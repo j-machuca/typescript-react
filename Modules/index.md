@@ -157,4 +157,63 @@ We can specify the files and folders to be checked or ignored by the compiler as
 ```
 ## **TSLint**
 
+The TSLint extensions allows us to define certain linting rules.
 
+**Installation**
+
+```bash
+npm install -g tslint
+```
+
+**Set up the Extension**
+
+Go to the IDE and install the extension.
+
+**Configure the rules**
+
+the `tslint` module and the IDE extension will check the `tslint.json` for the rules.
+
+Full list of [rules](https://palantir.github.io/tslint/rules/). 
+
+**tslint.json**
+
+```json
+{
+    "rules":{
+        // foces us to declare access modifiers
+        "member-access" true
+    }
+}
+```
+**Built-in rules**
+
+We can extend the default `tslint` built-in rulesets.
+
+**tslint.json**
+```json
+{
+    // Extending built in rules
+    "extends" : ["tslint:recommended"],
+    // Our own rules
+    "rules" : {
+        "interface-name":false,
+    }
+}
+```
+
+**Excluding Files**
+
+We can exclude files from the linting process. 
+
+*Useful for 3rd party code*
+
+```json
+{
+    "extends":["tslint:recommended"],
+    "linterOptions":{
+        "exclude":[
+            "node_modules/**/*.ts"
+            ]
+    }
+}
+```
