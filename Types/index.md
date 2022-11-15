@@ -7,14 +7,16 @@
 3. [Primitive Types](#primitive-types)
 4. [Typescript Specific types](#typescript-specific-types)
 5. [Arrays](#arrays)
-6. [Objects](#objects)
-7. [Object Types](#object-types)
+6. [Tuples](#tuples)
+7. [Objects](#objects)
+8. [Object Types](#object-types)
    1. [Interfaces](#interfaces)
    2. [Type Alias](#type-alias)
    3. [Classes](#classes)
-8. [Access Modifiers](#access-modifiers)
-9. [Property Setters and Getters](#property-setters-and-getters)
-10. [Static](#static)
+9. [Access Modifiers](#access-modifiers)
+10. [Property Setters and Getters](#property-setters-and-getters)
+11. [Static](#static)
+12. [Type checking](#type-checking)
 ---
 
 ## Type Basics
@@ -74,6 +76,10 @@
 
      let status = OrderStatus.Shipped;
      ```
+  5. unknown
+
+    - the key difference between `any` and `unknown` is that typescript will not perform type checking if we set type to `any`. 
+
 
 ## Arrays
 
@@ -98,6 +104,104 @@
 
   // We can change the value even if we used const since reference to the array is still the same.
   ```
+
+## Tuples
+
+- Is a finite ordered list of elements.
+
+```typescript
+// Defining the tuple
+let product: [string,number];
+
+// implementing
+product = ["table",500];
+
+// To Access values in the tuple
+console.log(product[0]) 
+console.log(product[1]) 
+
+// we can iterate over tuples using a for loop
+
+for (let element in product){
+  console.log(product[element]);
+}
+
+// or the forEach method
+
+product.forEach(function(element){
+  console.log(element);
+})
+
+```
+
+**Open ended tuples**
+
+- We can define open ended tuples using the `...`(rest) operator. 
+
+```typescript
+// Type definition
+type Scores = [string,...number[]];
+
+const billyScores:Scores = ['Billy',50,60,70];
+
+const sallyScores:Scores = ['Sally',50,60,70];
+```
+
+**Tuple function parameters**
+
+- We can define strongly-types `...`(rest) parameters in functions
+
+```typescript
+// Using rest operator
+function logScores(...scores:[...numbers[]]){
+  console.log(scores);
+}
+
+// Using open-ended tuples
+
+type Scores = [string,...number[]];
+
+function logNameAndScores (...scores:Scores){
+  console.log(scores);
+}
+
+logNameAndScores("Sally",60,70,75,70);
+```
+
+**Spread expressions**
+
+- Typescript allows us to use tuples with spread expressions.
+
+```typescript
+
+function logScore(score1:number,score2:number,score3:number) {
+  console.log(score1 + ', ' + score2 + ', ' + score3)
+}
+// fixed tuples
+const scores:[number,number,number] = [75,65,80];
+
+logScore(...scores);
+```
+
+**Empty tuples**
+
+- We can also set empty tuples. Not much use by itself but comes in handy when using `union` type.
+
+```typescript
+const empty:Empty = [];
+```
+
+**Optional tuple elements**
+
+- we can now define optional tuple elements
+
+```typescript
+type Scores = [number,number?,number?];
+
+const samScores:Scores = [55];
+const bobScores:Scores = [55,65];
+const jayScores:Scores = [55,65,65];
+```
 
 ## Objects
 
@@ -517,4 +621,67 @@ class OrderDetail {
 
 const total = OrderDetail.getTotal(500,2,0.1);
 console.log(total);
+```
+
+## Type Checking
+
+In order to check types
+
+```typescript
+    // defining the value as unknown will make the compiler detect the error
+    function logScores(scores:unknown){
+      console.log(scores.firstName);
+      console.log(scores.scores);
+    }
+
+    // Trying to excecute the function 
+    logScores({
+      name:"Billy",
+      scores:[60,70,75]
+    })
+
+    // Typechecking in the code using type predicates
+
+    const scoresCheck = (scores:any): scores is {name:string;scores:number[]} =>{
+      return 'name' in scores && 'scores' in scores;
+    }
+
+    // new funtion definition
+
+    function logScores(scores:unknown){
+      if(scoresCheck(scores)){
+        // will produce an error
+        console.log(scores.firstName);
+        // will pass type checking
+        console.log(scores.name);
+        console.log(scores.scores);
+      }
+    }
+
+    // a better implementation would be 
+
+    type Scores = {name:string;scores:number[]}
+    const scoresCheck = (scores:any):scores is Scores => {
+      return 'name' in scores && 'scores' in scores;
+    }
+
+```
+
+**Type Assertion**
+
+- We can do type assertion using the `as` keyword.
+
+```typescript
+// creating the type alias
+type Scores = {
+  name:string;
+  scores:number[]
+};
+
+// using the as keyword to tell the compiler what type to expect
+function logScores(scores:unknown){
+  // this will produce an error when trying to access firstName property
+  console.log((scores as Scores).firstName);
+  console.log((scores as Scores).scores);
+}
 ```
