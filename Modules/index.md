@@ -125,6 +125,10 @@ import Product from '/product';
 9. `--moduleResolution` 
     - Tells Typescript how to resolve modules.
     - Common values are `classic` or `node`. Using the node value for module resolution tells the compiler to look for modules in `node_modules`.
+10. `--strictNullChecks` 
+    - when set to `false`, `null` and `undefined` are ignored by typescript.
+    - when set to `true`, `null` and `undefined` have their own distinct types and will produce a type error where a concrete value is expected.
+
 
 ### **tsconfig.json**
 
@@ -155,6 +159,7 @@ We can specify the files and folders to be checked or ignored by the compiler as
     "include":["src/**/*"]
 }
 ```
+
 ## **TSLint**
 
 The TSLint extensions allows us to define certain linting rules.
