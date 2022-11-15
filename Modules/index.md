@@ -5,6 +5,9 @@
 ---
 
 1. [Structuring code into Modules](#modules)
+2. [Exporting](#exporting)
+3. [Importing](#importing)
+4. [Default Exports](#default-exports)
 
 
 
@@ -96,3 +99,28 @@ export default interface {
 ```typescript
 import Product from '/product';
 ```
+
+### Configuring Compilation
+
+#### Common Options
+
+1. `--target` 
+    - **ES3** defaults to 
+    - **ESNext** Latest supported features of the ECMAScript.
+2. `--outDir` 
+    - By default the transpiled JS files are created in the same directory.
+3. `--module` 
+    - Defaults to **CommonJS** (check [Modules](#modules)) for other options.
+4. `--allowJS` 
+    - Tells the TypeScript compiler to process Javascript files as well.
+5. `--watch` 
+    - allows for constant recompiling of the code.
+6. `--noImplicityAny`
+    - Forces to specify to either specify a type or explicitly use the `any` keyword. In this case Typescript will not infer the `any` type.  
+7. `--noImplicitReturns`
+    - Forces us to return a value in all branches of a function unless `void` is explicitly defined.
+8. `--sourceMap` 
+    - Creates a `*.map` during the transpilation process. 
+9. `--moduleResolution` 
+    - Tells Typescript how to resolve modules.
+    - Common values are `classic` or `node`. Using the node value for module resolution tells the compiler to look for modules in `node_modules`.
